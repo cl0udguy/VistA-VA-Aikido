@@ -155,6 +155,8 @@ def generateExternalDataFileName(sha1Sum):
 
 """ read the sha1Sum from sha1 file """
 def readSha1SumFromSha1File(sha1File):
+  if ".." in sha1File:
+    raise Exception("Invalid file path")
   with open(sha1File, "r") as input:
     return input.readline().rstrip('\r\n ')
 
@@ -165,6 +167,8 @@ def addToGitIgnoreList(fileName):
   rootDir = os.path.dirname(fileName)
   basename = os.path.basename(fileName)
   gitIgnoreFile = os.path.join(rootDir, ".gitignore")
+  if ".." in gitIgnoreFile:
+    raise Exception("Invalid file path")
   if os.path.exists(gitIgnoreFile):
     with open(gitIgnoreFile, "r") as ignoreFile:
       for line in ignoreFile:
@@ -178,6 +182,8 @@ def addToGitIgnoreList(fileName):
 
 """ utility method to generate sha1 hash key for input file """
 def generateSha1Sum(inputFilename):
+  if ".." in inputFilename:
+    raise Exception("Invalid file path")
   assert os.path.exists(inputFilename)
   fileSize = os.path.getsize(inputFilename)
   MAX_READ_SIZE = 20 * 1024 * 1024 # 20 MiB
