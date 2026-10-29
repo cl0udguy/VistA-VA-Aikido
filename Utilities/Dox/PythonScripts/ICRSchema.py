@@ -167,6 +167,8 @@ def isWordProcessingField(field):
     return field in WORDS_FIELDS
 
 def getDate(icrFilename):
+    if ".." in icrFilename:
+        raise Exception("Invalid file path")
     with open(icrFilename, 'r') as ICRFile:
         for line in ICRFile:
             line = line.rstrip(r"\r\n")
