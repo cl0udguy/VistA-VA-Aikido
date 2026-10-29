@@ -50,6 +50,8 @@ class ICRFileToJson(object):
         self._curStack = []
 
     def parse(self, inputFilename, outputFilename):
+        if '..' in inputFilename:
+            raise Exception('Invalid file path')
         with open(inputFilename, 'r') as ICRFile:
             curLineNo = 0
             curNumber = None
@@ -209,6 +211,8 @@ class ICRFileToJson(object):
         self._rewindStack()
         if self._curRecord:
             self._outObject.append(self._curRecord)
+        if '..' in outputFilename:
+            raise Exception('Invalid file path')
         outputDir = os.path.dirname(outputFilename)
         if not os.path.exists(outputDir):
             # Will also create intermediate directories if needed
