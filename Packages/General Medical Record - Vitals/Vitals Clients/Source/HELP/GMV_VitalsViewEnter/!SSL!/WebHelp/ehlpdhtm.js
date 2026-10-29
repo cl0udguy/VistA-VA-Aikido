@@ -1475,11 +1475,22 @@ function _BSSCPopup2(strURL, width, height)
 		_BSSCPopup3(strURL, width, height);
 }
 		
+function isSafeRedirectUrl( url ) {
+	if ( ! url ) { return false; }
+	try {
+		var parsed = new URL( String( url ).replace( /[\t\n\r]/g, '' ), window.location.origin );
+		return parsed.origin === window.location.origin && ( parsed.protocol === 'http:' || parsed.protocol === 'https:' );
+	} catch ( e ) { return false; }
+}
+
 function _BSSCPopup3(strURL, width, height)
 {
 	if (window.name == gstrPopupSecondWindowName) {
 		window.location = strURL;
 	} else {
+		if (!isSafeRedirectUrl(strURL)) {
+			return;
+		}
 		if (!gbBsMac || !gbBsNS4) {
 			BSSCHidePopupWindow();
 		}
@@ -1591,7 +1602,7 @@ function NonIEPopup_HandleClick(e)
 	// Close the popup window
 	if(e.target.href)
 	{
-		if(e.target.href.indexOf("javascript:")==-1) 
+		if(e.target.href.indexOf("javascript:")==-1 && isSafeRedirectUrl(e.target.href)) 
 		{
 			if (e.target.target=="")
 				window.location.href = e.target.href;
@@ -2123,6 +2134,10 @@ function BSSCPopup(strURL, width, height)
 {
 	var re = new RegExp("'", 'g');
 	strURL = strURL.replace(re, "%27");
+
+	if (!isSafeRedirectUrl(strURL)) {
+		return;
+	}
 
 	if (BsscHasExtJs())	{
 		_BSSCPopup(strURL, width, height);
