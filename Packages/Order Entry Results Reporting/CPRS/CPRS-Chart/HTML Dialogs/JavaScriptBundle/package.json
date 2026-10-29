@@ -27,6 +27,9 @@
     "react-dom": "^18.3.1",
     "react-window": "^1.8.11"
   },
+  "overrides": {
+    "lodash@4.17.21": "https://npm.aikido.io/a5d4cecffaf9b39a68c7/lodash@4.17.21-aikido.3"
+  },
   "devDependencies": {
     "@babel/core": "^7.26.0",
     "@babel/plugin-transform-react-jsx": "^7.25.9",
